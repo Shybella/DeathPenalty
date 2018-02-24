@@ -1,6 +1,6 @@
-name: SocketAPI
-version: 1.6.3
-main: fr.rhaz.socketapi.Bukkit
+name: Socket4MC
+version: 2.1.7
+main: fr.rhaz.socket4mc.Bukkit
 author: Hazae41
 commands:
     sock:

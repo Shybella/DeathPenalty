@@ -1,3 +1,5 @@
 host: "localhost"
 port: 25575
-name: "Factions"
+name: "Spigot"
+security-level: 1
+debug: false
