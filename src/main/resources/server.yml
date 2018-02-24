@@ -1,0 +1,4 @@
+port: 25575
+name: "Bungee"
+security-level: 1
+debug: false
