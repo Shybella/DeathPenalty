@@ -1,4 +1,4 @@
 name: Socket4MC
-version: 2.1.7
-main: fr.rhaz.socket4mc.Bungee
+version: 3.1
+main: fr.rhaz.sockets.socket4mc.Socket4Bungee
 author: Hazae41

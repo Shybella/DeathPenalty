@@ -1,6 +1,6 @@
 name: ${project.name}
 version: ${project.version}
-main: ${project.groupId}.${project.artifactId}.Bukkit
+main: ${project.groupId}.${project.artifactId}.Socket4Bukkit
 author: Hazae41
 commands:
     sock:

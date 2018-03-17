@@ -1,6 +1,6 @@
 name: Socket4MC
-version: 2.1.7
-main: fr.rhaz.socket4mc.Bukkit
+version: 3.1
+main: fr.rhaz.sockets.socket4mc.Socket4Bukkit
 author: Hazae41
 commands:
     sock:

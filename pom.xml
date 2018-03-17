@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>fr.rhaz</groupId>
+  <groupId>fr.rhaz.sockets</groupId>
   <artifactId>socket4mc</artifactId>
-  <version>2.1.7</version>
+  <version>3.1</version>
   <name>Socket4MC</name>
   <description>Socket Manager for Minecraft/Bukkit servers</description>
   <repositories>
@@ -120,8 +120,8 @@
     	</dependency>
 	    <dependency>
 	    	<groupId>fr.rhaz</groupId>
-	    	<artifactId>socketapi</artifactId>
-	    	<version>2.1</version>
+	    	<artifactId>sockets</artifactId>
+	    	<version>2.2.1</version>
 	    	<type>jar</type>
 	    	<scope>compile</scope>
 	    </dependency>
