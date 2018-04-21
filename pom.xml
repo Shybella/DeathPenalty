@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fr.rhaz.sockets</groupId>
   <artifactId>socket4mc</artifactId>
-  <version>3.1</version>
+  <version>3.2</version>
   <name>Socket4MC</name>
   <description>Socket Manager for Minecraft/Bukkit servers</description>
   <repositories>
@@ -121,7 +121,7 @@
 	    <dependency>
 	    	<groupId>fr.rhaz</groupId>
 	    	<artifactId>sockets</artifactId>
-	    	<version>2.2.1</version>
+	    	<version>2.2.3</version>
 	    	<type>jar</type>
 	    	<scope>compile</scope>
 	    </dependency>

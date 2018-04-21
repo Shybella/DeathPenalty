@@ -6,11 +6,11 @@ import java.nio.file.Files;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import fr.rhaz.socketapi.client.SocketClient;
-import fr.rhaz.socketapi.client.SocketClientApp;
-import fr.rhaz.socketapi.server.SocketMessenger;
-import fr.rhaz.socketapi.server.SocketServer;
-import fr.rhaz.socketapi.server.SocketServerApp;
+import fr.rhaz.sockets.client.SocketClient;
+import fr.rhaz.sockets.client.SocketClientApp;
+import fr.rhaz.sockets.server.SocketMessenger;
+import fr.rhaz.sockets.server.SocketServer;
+import fr.rhaz.sockets.server.SocketServerApp;
 import net.md_5.bungee.api.plugin.Event;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -125,19 +125,42 @@ public class Socket4Bungee extends Plugin {
 		
 		public static class ServerSocketJSONEvent extends Event {
 			private SocketMessenger mess;
-			private Map<String, String> map;
+			private Map<String, Object> map;
 			
-			public ServerSocketJSONEvent(SocketMessenger mess, Map<String, String> map){
+			public ServerSocketJSONEvent(SocketMessenger mess, Map<String, Object> map){
 				this.mess = mess;
 				this.map = map;
 			}
 			
 			public String getChannel(){
-				return map.get("channel");
+				return (String) map.get("channel");
 			}
 			
 			public String getData(){
-				return map.get("data");
+				return (String) map.get("data");
+			}
+			
+			@SuppressWarnings("unchecked")
+			public <T> T getExtra(String key, Class<T> type) {
+				return (T) map.get(key);
+			}
+			
+			public String getExtraString(String key) {
+				return getExtra(key, String.class);
+			}
+			
+			public int getExtraInt(String key) {
+				return getExtra(key, int.class);
+			}
+			
+			@SuppressWarnings("unchecked")
+			public Map<String, Object> getExtraMap(String key) {
+				return getExtra(key, Map.class);
+			}
+			
+			@Deprecated
+			public Map<String, Object> getMap(){
+				return map;
 			}
 			
 			public String getName(){
@@ -194,7 +217,7 @@ public class Socket4Bungee extends Plugin {
 		}
 	
 		@Override
-		public void onJSON(SocketMessenger mess, Map<String, String> map) {
+		public void onJSON(SocketMessenger mess, Map<String, Object> map) {
 			plugin().getProxy().getPluginManager().callEvent(new ServerSocketJSONEvent(mess, map));
 		}
 	
@@ -241,20 +264,43 @@ public class Socket4Bungee extends Plugin {
 		}
 		
 		public static class ClientSocketJSONEvent extends Event {
-			private Map<String, String> map;
+			private Map<String, Object> map;
 			private SocketClient client;
 			
-			public ClientSocketJSONEvent(SocketClient client, Map<String, String> map){
+			public ClientSocketJSONEvent(SocketClient client, Map<String, Object> map){
 				this.client = client;
 				this.map = map;
 			}
 			
 			public String getChannel(){
-				return map.get("channel");
+				return (String) map.get("channel");
 			}
 			
 			public String getData(){
-				return map.get("data");
+				return (String) map.get("data");
+			}
+			
+			@SuppressWarnings("unchecked")
+			public <T> T getExtra(String key, Class<T> type) {
+				return (T) map.get(key);
+			}
+			
+			public String getExtraString(String key) {
+				return getExtra(key, String.class);
+			}
+			
+			public int getExtraInt(String key) {
+				return getExtra(key, int.class);
+			}
+			
+			@SuppressWarnings("unchecked")
+			public Map<String, Object> getExtraMap(String key) {
+				return getExtra(key, Map.class);
+			}
+			
+			@Deprecated
+			public Map<String, Object> getMap(){
+				return map;
 			}
 			
 			public SocketClient getClient(){
@@ -296,7 +342,7 @@ public class Socket4Bungee extends Plugin {
 		}
 	
 		@Override
-		public void onJSON(SocketClient client, Map<String, String> map) {
+		public void onJSON(SocketClient client, Map<String, Object> map) {
 			plugin().getProxy().getPluginManager().callEvent(new ClientSocketJSONEvent(client, map));
 		}
 	
