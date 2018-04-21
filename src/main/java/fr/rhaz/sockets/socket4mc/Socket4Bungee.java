@@ -136,8 +136,9 @@ public class Socket4Bungee extends Plugin {
 				return (String) map.get("channel");
 			}
 			
+			@Deprecated
 			public String getData(){
-				return (String) map.get("data");
+				return getExtraString("data");
 			}
 			
 			@SuppressWarnings("unchecked")
@@ -276,8 +277,9 @@ public class Socket4Bungee extends Plugin {
 				return (String) map.get("channel");
 			}
 			
+			@Deprecated
 			public String getData(){
-				return (String) map.get("data");
+				return getExtraString("data");
 			}
 			
 			@SuppressWarnings("unchecked")
