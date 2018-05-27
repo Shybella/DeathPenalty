@@ -1,5 +1,0 @@
-debug: false
-host: "localhost"
-port: 25575
-name: "Spigot"
-security-level: 1

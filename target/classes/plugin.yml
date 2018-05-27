@@ -1,8 +1,0 @@
-name: Socket4MC
-version: 3.2
-main: fr.rhaz.sockets.socket4mc.Socket4Bukkit
-author: Hazae41
-commands:
-    sock:
-        description: "Main Command"
-        aliases: [bukkitsock]

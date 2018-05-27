@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>fr.rhaz.sockets</groupId>
-  <artifactId>socket4mc</artifactId>
-  <version>3.2</version>
-  <name>Socket4MC</name>
-  <description>Socket Manager for Minecraft/Bukkit servers</description>
+  <groupId>fr.rhaz.sponge</groupId>
+  <artifactId>obsidianbreaker</artifactId>
+  <version>1.0</version>
+  <name>ObsidianBreaker</name>
+  <description>Make obsidian blocks damageable</description>
   <repositories>
 	    <repository>
 	        <id>bungeecord-repo</id>
@@ -13,6 +13,10 @@
 	    <repository>
         <id>spigot-repo</id>
         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+        <id>sponge</id>
+        <url>https://repo.spongepowered.org/maven</url>
     </repository>
 	</repositories>
 	
@@ -23,6 +27,7 @@
 		<filtering>true</filtering>
 		<includes>
 		<include>*</include>
+		<include>/assets/${project.artifactId}/*</include>
 		</includes>
 		</resource>
 		</resources>
@@ -105,25 +110,10 @@
 	
 	<dependencies>
 	    <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.12-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-	    <dependency>
-           <groupId>org.spigotmc</groupId>
-           <artifactId>spigot-api</artifactId>
-           <version>1.12.2-R0.1-SNAPSHOT</version>
-           <type>jar</type>
-           <scope>provided</scope>
-    	</dependency>
-	    <dependency>
-	    	<groupId>fr.rhaz</groupId>
-	    	<artifactId>sockets</artifactId>
-	    	<version>2.2.3</version>
-	    	<type>jar</type>
-	    	<scope>compile</scope>
-	    </dependency>
+        <groupId>org.spongepowered</groupId>
+        <artifactId>spongeapi</artifactId>
+        <version>7.0.0</version>
+        <scope>provided</scope>
+    </dependency>
 	</dependencies>
 </project>
