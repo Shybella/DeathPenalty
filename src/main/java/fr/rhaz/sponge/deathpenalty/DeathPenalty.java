@@ -63,7 +63,7 @@ public class DeathPenalty {
         Optional<EconomyService> economy = Sponge.getServiceManager().provide(EconomyService.class);
         
         Builder cmdMain = CommandSpec.builder()
-			.description(Text.of("DeathPenalty"))
+			.description(Text.of("Reload DeathPenalty"))
 			.permission("deathpenalty.reload")
 			.executor(new CommandExecutor() {
 				public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException{
