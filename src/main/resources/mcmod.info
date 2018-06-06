@@ -4,5 +4,6 @@
     "version": "${project.version}",
     "description": "${project.description}",
     "authorList": ["RHazDev"],
-	"dependencies": ["spongeapi@7.0.0"]
+	"dependencies": ["spongeapi@7.0.0"],
+	"requiredMods": ["spongeapi@7.0.0"]
 }]
