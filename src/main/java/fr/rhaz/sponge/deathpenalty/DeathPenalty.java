@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.file.Path;
+import java.text.DecimalFormat;
 import java.util.Optional;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -36,88 +37,88 @@ import org.slf4j.Logger;
 
 @Plugin(id = "deathpenalty", name = "DeathPenalty", version = "1.0")
 public class DeathPenalty {
-	
+
 	private ConfigurationNode config;
 	private static DeathPenalty i;
-	
+
 	private EventContext context;
-	
+
 	@Inject
-    @ConfigDir(sharedRoot = false)
-    private Path configDir;
-    @Inject
-    @ConfigDir(sharedRoot = true)
-    private Path mainDir;
+	@ConfigDir(sharedRoot = false)
+	private Path configDir;
+	@Inject
+	@ConfigDir(sharedRoot = true)
+	private Path mainDir;
 	private HoconConfigurationLoader cloader;
-    
+
 	public EconomyService eco = null;
-	
+
 	@Listener
-    public void onServerStart(GameStartedServerEvent e) {
+	public void onServerStart(GameStartedServerEvent e) {
 		i = this;
-		
+
 		context = EventContext.builder().add(EventContextKeys.PLUGIN, i.getContainer()).build();
-		
-        loadConfig();
-        
-        Optional<EconomyService> economy = Sponge.getServiceManager().provide(EconomyService.class);
-        
-        Builder cmdMain = CommandSpec.builder()
-			.description(Text.of("Reload DeathPenalty"))
-			.permission("deathpenalty.reload")
-			.executor(new CommandExecutor() {
-				public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException{
-					loadConfig();
-					src.sendMessage(Text.of(
-						TextColors.BLUE, "[DeathPenalty]: ",
-						TextColors.GRAY, "Reloaded"
-					));
-					return CommandResult.success();
-				}
-			});
-        
-        Sponge.getCommandManager().register(this, cmdMain.build(), "deathpenalty");
-		
-		if (economy.isPresent()) 
+
+		loadConfig();
+
+		Optional<EconomyService> economy = Sponge.getServiceManager().provide(EconomyService.class);
+
+		Builder cmdMain = CommandSpec.builder()
+				.description(Text.of("Reload DeathPenalty"))
+				.permission("deathpenalty.reload")
+				.executor(new CommandExecutor() {
+					public CommandResult execute(CommandSource src, CommandContext ctx) throws CommandException {
+						loadConfig();
+						src.sendMessage(Text.of(
+								TextColors.BLUE, "[DeathPenalty]: ",
+								TextColors.GRAY, "Reloaded"
+						));
+						return CommandResult.success();
+					}
+				});
+
+		Sponge.getCommandManager().register(this, cmdMain.build(), "deathpenalty");
+
+		if (economy.isPresent())
 			eco = economy.get();
-		else	
+		else
 			Sponge.getEventManager().unregisterPluginListeners(this);
 
 	}
-	
+
 	public static Logger getLogger() {
-	    return i.getContainer().getLogger();
+		return i.getContainer().getLogger();
 	}
-	
+
 	public ConfigurationNode loadConfig() {
 		try {
-			
+
 			String name = "config.conf";
 
 			URL def = getContainer().getAsset(name).get().getUrl();
 			HoconConfigurationLoader defloader = HoconConfigurationLoader.builder().setURL(def).build();
-		    ConfigurationNode defaults = defloader.load();
-		    
-		    File cfile = new File(configDir.toFile(), name);
-		    if(!configDir.toFile().exists())
-		    	configDir.toFile().mkdirs();
-		    if(!cfile.exists())
-		    	cfile.createNewFile();
-		    
-		    cloader = HoconConfigurationLoader.builder().setFile(cfile).build();
+			ConfigurationNode defaults = defloader.load();
+
+			File cfile = new File(configDir.toFile(), name);
+			if (!configDir.toFile().exists())
+				configDir.toFile().mkdirs();
+			if (!cfile.exists())
+				cfile.createNewFile();
+
+			cloader = HoconConfigurationLoader.builder().setFile(cfile).build();
 			config = cloader.load();
-				
+
 			config.mergeValuesFrom(defaults);
 			cloader.save(config);
-			
+
 			return config;
-			
-		} catch(IOException e) {
+
+		} catch (IOException e) {
 			e.printStackTrace();
-		    return null;
+			return null;
 		}
 	}
-	
+
 	public void saveConfig() {
 		try {
 			cloader.save(config);
@@ -125,40 +126,48 @@ public class DeathPenalty {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static DeathPenalty get() {
 		return i;
 	}
-	
+
 	public PluginContainer getContainer() {
 		return Sponge.getPluginManager().fromInstance(i).get();
 	}
-	
+
 	public EventContext getContext() {
 		return context;
 	}
-	
+
 	@Listener
-	public void onPlayerInteractBlock(DestructEntityEvent.Death e){
-		
-		if(!(e.getTargetEntity() instanceof Player))
+	public void onPlayerInteractBlock(DestructEntityEvent.Death e) {
+
+		if (!(e.getTargetEntity() instanceof Player))
 			return;
-		
+
 		Player player = (Player) e.getTargetEntity();
-		
-		if(player.hasPermission("deathpenalty.bypass"))
+
+		if (player.hasPermission("deathtax.bypass"))
 			return;
-		
+
 		double amount = config.getNode("amount").getDouble(0.0);
-		if(amount == 0.0) return;
-		
-		BigDecimal bamount = BigDecimal.valueOf(amount);
-		
+
 		Currency curr = eco.getDefaultCurrency();
-		
+
 		Cause cause = e.getCause();
-		
-		eco.getOrCreateAccount(player.getUniqueId()).get().withdraw(curr, bamount, cause);
+
+		BigDecimal realbalance = eco.getOrCreateAccount(player.getUniqueId()).get().getBalance(eco.getDefaultCurrency());
+
+		int modified_balance = realbalance.intValue();
+		double deathtax_due = modified_balance - (modified_balance * amount);
+		BigDecimal death_tax_due = BigDecimal.valueOf(deathtax_due);
+
+		double d = deathtax_due;
+		DecimalFormat df = new DecimalFormat("#.##");
+
+		player.sendMessage(Text.of(Text.of(
+				TextColors.GOLD, "[Government]: ",
+				TextColors.GRAY, "You have died! You have been charged " + df.format(d) + " Shekels.")));
+		eco.getOrCreateAccount(player.getUniqueId()).get().withdraw(curr, death_tax_due, cause);
 	}
-	
 }
