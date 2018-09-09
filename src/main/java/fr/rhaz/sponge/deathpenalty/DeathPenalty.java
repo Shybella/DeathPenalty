@@ -151,7 +151,7 @@ public class DeathPenalty {
 			return;
 
 		double amount = config.getNode("amount").getDouble(0.0);
-
+ 	    if(amount == 0.0 ) { return; }
 		Currency curr = eco.getDefaultCurrency();
 
 		Cause cause = e.getCause();
