@@ -4,7 +4,7 @@ This is just a fork of an idea.
 
 Changed from flat rate to percentage, example
 
-- `amount=98.8` will charge `1.2%` of player balance on death
+- `amount=0.982` will charge `1.2%` of player balance on death
 
 
 This project and its source code is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International licence](https://creativecommons.org/licenses/by-sa/4.0/).
