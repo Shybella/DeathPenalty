@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.util.Optional;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandManager;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
@@ -50,7 +51,7 @@ public class DeathPenalty {
 	@ConfigDir(sharedRoot = true)
 	private Path mainDir;
 	private HoconConfigurationLoader cloader;
-
+	CommandManager cmdManager = Sponge.getCommandManager();
 	public EconomyService eco = null;
 
 	@Listener
@@ -151,7 +152,10 @@ public class DeathPenalty {
 			return;
 
 		double amount = config.getNode("amount").getDouble(0.0);
- 	    if(amount == 0.0 ) { return; }
+		Boolean lottery = config.getNode("lottery").getBoolean();
+
+		if(amount == 0.0) { return; }
+
 		Currency curr = eco.getDefaultCurrency();
 
 		Cause cause = e.getCause();
@@ -163,11 +167,22 @@ public class DeathPenalty {
 		BigDecimal death_tax_due = BigDecimal.valueOf(deathtax_due);
 
 		double d = deathtax_due;
-		DecimalFormat df = new DecimalFormat("#.##");
+		DecimalFormat df = new DecimalFormat("#");
 
 		player.sendMessage(Text.of(Text.of(
 				TextColors.GOLD, "[Government]: ",
 				TextColors.GRAY, "You have died! You have been charged " + df.format(d) + " Shekels.")));
+
+		//Withdraw from player account
 		eco.getOrCreateAccount(player.getUniqueId()).get().withdraw(curr, death_tax_due, cause);
+
+		//RandomByte lottery Intergration
+		if(lottery == true) {
+			cmdManager.process(Sponge.getServer().getConsole(), "lottery addpot " + df.format(d));
+		}
+		else {
+			return;
+		}
 	}
 }
+
